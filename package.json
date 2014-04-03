@@ -1,0 +1,50 @@
+{
+    "name": "grunt-meta-excel",
+    "description": "HTMLファイルのtitle, description, keywords, OGPなどの値を、Excelファイルの内容にのっとって更新するGruntプラグイン。",
+    "version": "0.0.0",
+    "homepage": "https://github.com/daikiueda/grunt-meta-excel",
+    "author": "daikiueda",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/daikiueda/grunt-meta-excel.git"
+    },
+    "bugs": {
+        "url": "https://github.com/daikiueda/grunt-meta-excel/issues"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/daikiueda/grunt-meta-excel/blob/master/LICENSE"
+        }
+    ],
+    "engines": {
+        "node": ">= 0.10.0"
+    },
+    "scripts": {
+        "test": "grunt test"
+    },
+    "dependencies": {
+        "lodash": "~2.4.1",
+        "xlsx2json": "~0.0.2"
+    },
+    "devDependencies": {
+        "grunt-contrib-jshint": "^0.9.2",
+        "grunt-contrib-clean": "^0.5.0",
+        "grunt-contrib-nodeunit": "^0.3.3",
+        "grunt": "~0.4.4"
+    },
+    "peerDependencies": {
+        "grunt": "~0.4.4"
+    },
+    "keywords": [
+        "gruntplugin",
+        "html",
+        "meta",
+        "title",
+        "description",
+        "keywords",
+        "ogp",
+        "excel",
+        "seo"
+    ]
+}
