@@ -1,73 +1,56 @@
 /*
  * grunt-meta-excel
- * https://github.com/daikiueda/grunt-meta-excel
- *
- * Copyright (c) 2014 daikiueda
+ * Copyright (c) 2014 daikiueda, @ue_di
  * Licensed under the MIT license.
+ * https://github.com/daikiueda/grunt-meta-excel
  */
 
-'use strict';
+"use strict";
 
-module.exports = function(grunt) {
+module.exports = function( grunt ){
 
-  // Project configuration.
-  grunt.initConfig({
-    jshint: {
-      all: [
-        'Gruntfile.js',
-        'tasks/*.js',
-        '<%= nodeunit.tests %>',
-      ],
-      options: {
-        jshintrc: '.jshintrc',
-      },
-    },
-
-    // Before generating any new files, remove any previously-created files.
-    clean: {
-      tests: ['tmp'],
-    },
-
-    // Configuration to be run (and then tested).
-    meta_excel: {
-      default_options: {
-        options: {
+    // Project configuration.
+    grunt.initConfig( {
+        jshint: {
+            all: [
+                'Gruntfile.js',
+                'tasks/*.js',
+                '<%= mochaTest.test.src %>'
+            ],
+            options: {
+                jshintrc: '.jshintrc'
+            }
         },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123'],
+
+        meta_excel: {
+            options: {
+                test: 1,
+                mapping: 1
+            },
+            test_site: {
+                options: {
+                  test: 2
+                },
+                xlsx: "sample/pages.xlsx",
+                htmlDir: "sample/htdocs/"
+            }
         },
-      },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!',
-        },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
-      },
-    },
 
-    // Unit tests.
-    nodeunit: {
-      tests: ['test/*_test.js'],
-    },
+        mochaTest: {
+            test: {
+                options: {
+                    reporter: "spec"
+                },
+                src: [ "test/**/*.js" ]
+            }
+        }
+    } );
 
-  });
+    grunt.loadTasks( "tasks" );
 
-  // Actually load this plugin's task(s).
-  grunt.loadTasks('tasks');
+    grunt.loadNpmTasks( "grunt-contrib-jshint" );
+    grunt.loadNpmTasks( "grunt-mocha-test" );
 
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-nodeunit');
-
-  // Whenever the "test" task is run, first clean the "tmp" dir, then run this
-  // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'meta_excel', 'nodeunit']);
-
-  // By default, lint and run all tests.
-  grunt.registerTask('default', ['jshint', 'test']);
-
+    grunt.registerTask( "test", [ "mochaTest" ] );
+    grunt.registerTask( "default", [ "jshint", "test" ] );
 };
