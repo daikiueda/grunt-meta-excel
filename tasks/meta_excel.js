@@ -12,57 +12,6 @@ var fs = require( "fs" ),
     _ = require( "lodash" ),
     xlsx2json = require( "xlsx2json" );
 
-var Options = function( options ){
-    this.mapping = this._mapping();
-    this.patterns = this._patterns();
-};
-Options.prototype = {
-    charset: "utf-8",
-
-    dataStartingRow: 8,
-
-    _mapping: function(){ return {
-        uri: "A",
-        title: "B",
-        title_all: "D",
-        description: "E",
-        keywords: "F",
-        url: "G",
-        thumbnail: "H",
-        canonical: "I"
-    } },
-
-    _patterns: function(){ return {
-        title_all: {
-            '<title>.*</title>': '<title><%= title_all %></title>',
-            '<meta property="og:title"[^>]* content="[^"]*<\\$mt:[^$]+\\$>[^"]*"[^>]*>': '<meta property="og:title" content="###">',
-            '<meta [^>]*property="og:title"[^>]*>': '<meta property="og:title" content="<%= title_all %>">'
-        },
-
-        description: {
-            '<meta [^>]*name="description"[^>]*>': '<meta name="description" content="<%= description %>">',
-            '<meta [^>]*property="og:description"[^>]*>': '<meta property="og:description" content="<%= description %>">'
-        },
-
-        keywords: {
-            '<meta [^>]*name="keywords"[^>]*>': '<meta name="keywords" content="<%= keywords %>">'
-        },
-
-        url: {
-            '<meta [^>]*property="og:url"[^>]*>': '<meta property="og:url" content="<%= url.replace( "index.html", "" ) %>">'
-        },
-
-        thumbnail: {
-            '<meta [^>]*property="og:image"[^>]*>': '<meta property="og:image" content="<%= thumbnail %>">'
-        },
-
-        canonical: {
-            '<link [^>]*rel="canonical"[^>]*>': '<link rel="canonical" href="<%= canonical.replace( "index.html", "" ) %>">'
-        }
-    } },
-
-    before: null
-};
 
 function updateHTML( htmlDir, metadata, options, grunt ){
 
@@ -97,8 +46,37 @@ module.exports = function( grunt ){
     grunt.registerMultiTask( 'meta_excel', 'HTMLファイルのtitle, description, keywords, OGPなどの値を、Excelファイルの内容にのっとって更新するGruntプラグイン。', function(){
 
         var done = this.async(),
-//            options = this.options();
-            options = new Options();
+            options = this.options( {
+                charset: "utf-8",
+                patterns: {
+                    title_all: {
+                        '<title>.*</title>': '<title><%= title_all %></title>',
+                        '<meta property="og:title"[^>]* content="[^"]*<\\$mt:[^$]+\\$>[^"]*"[^>]*>': '<meta property="og:title" content="###">',
+                        '<meta [^>]*property="og:title"[^>]*>': '<meta property="og:title" content="<%= title_all %>">'
+                    },
+
+                    description: {
+                        '<meta [^>]*name="description"[^>]*>': '<meta name="description" content="<%= description %>">',
+                        '<meta [^>]*property="og:description"[^>]*>': '<meta property="og:description" content="<%= description %>">'
+                    },
+
+                    keywords: {
+                        '<meta [^>]*name="keywords"[^>]*>': '<meta name="keywords" content="<%= keywords %>">'
+                    },
+
+                    url: {
+                        '<meta [^>]*property="og:url"[^>]*>': '<meta property="og:url" content="<%= url.replace( "index.html", "" ) %>">'
+                    },
+
+                    thumbnail: {
+                        '<meta [^>]*property="og:image"[^>]*>': '<meta property="og:image" content="<%= thumbnail %>">'
+                    },
+
+                    canonical: {
+                        '<link [^>]*rel="canonical"[^>]*>': '<link rel="canonical" href="<%= canonical.replace( "index.html", "" ) %>">'
+                    }
+                }
+            } );
 
         xlsx2json( this.data.xlsx, options )
             .done( function( pages ){

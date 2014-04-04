@@ -24,13 +24,19 @@ module.exports = function( grunt ){
 
         meta_excel: {
             options: {
-                test: 1,
-                mapping: 1
+                dataStartingRow: 8,
+                mapping: {
+                    uri: "A",
+                    title: "B",
+                    title_all: "D",
+                    description: "E",
+                    keywords: "F",
+                    url: "G",
+                    thumbnail: "H",
+                    canonical: "I"
+                }
             },
             test_site: {
-                options: {
-                  test: 2
-                },
                 xlsx: "sample/pages.xlsx",
                 htmlDir: "sample/htdocs/"
             }
