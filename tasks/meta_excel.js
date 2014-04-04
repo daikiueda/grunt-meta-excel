@@ -19,17 +19,20 @@ function updateHTML( htmlDir, metadata, options, grunt ){
         return;
     }
 
-    var patterns = options.patterns,
+    var allPatterns = options.patterns,
         htmlCode = fs.readFileSync( path.normalize( htmlDir + path.sep + metadata.uri ), options.charset );
 
-    _.forEach( patterns, function( patternSet, attr ){
+    _.forEach( allPatterns, function( patterns, attr ){
         if( typeof metadata[ attr ] === "undefined" ){
             return;
         }
 
-        _.forEach( patternSet, function( replace, pattern ){
+        _.forEach( patterns, function( pattern ){
+            var target = pattern[ 0 ],
+                replace = pattern[ 1 ];
+
             htmlCode = htmlCode.replace(
-                new RegExp( pattern, "g" ),
+                new RegExp( target, "g" ),
                 _.template( replace )( metadata )
             );
         } );
@@ -49,32 +52,32 @@ module.exports = function( grunt ){
             options = this.options( {
                 charset: "utf-8",
                 patterns: {
-                    title_all: {
-                        '<title>.*</title>': '<title><%= title_all %></title>',
-                        '<meta property="og:title"[^>]* content="[^"]*<\\$mt:[^$]+\\$>[^"]*"[^>]*>': '<meta property="og:title" content="###">',
-                        '<meta [^>]*property="og:title"[^>]*>': '<meta property="og:title" content="<%= title_all %>">'
-                    },
+                    "title_all": [
+                        [ '<title>.*</title>', '<title><%= title_all %></title>' ],
+                        [ '<meta property="og:title"[^>]* content="[^"]*<\\$mt:[^$]+\\$>[^"]*"[^>]*>', '<meta property="og:title" content="###">' ],
+                        [ '<meta [^>]*property="og:title"[^>]*>', '<meta property="og:title" content="<%= title_all %>">' ]
+                    ],
 
-                    description: {
-                        '<meta [^>]*name="description"[^>]*>': '<meta name="description" content="<%= description %>">',
-                        '<meta [^>]*property="og:description"[^>]*>': '<meta property="og:description" content="<%= description %>">'
-                    },
+                    "description": [
+                        [ '<meta [^>]*name="description"[^>]*>', '<meta name="description" content="<%= description %>">' ],
+                        [ '<meta [^>]*property="og:description"[^>]*>', '<meta property="og:description" content="<%= description %>">' ]
+                    ],
 
-                    keywords: {
-                        '<meta [^>]*name="keywords"[^>]*>': '<meta name="keywords" content="<%= keywords %>">'
-                    },
+                    "keywords": [
+                        [ '<meta [^>]*name="keywords"[^>]*>', '<meta name="keywords" content="<%= keywords %>">' ]
+                    ],
 
-                    url: {
-                        '<meta [^>]*property="og:url"[^>]*>': '<meta property="og:url" content="<%= url.replace( "index.html", "" ) %>">'
-                    },
+                    url: [
+                        [ '<meta [^>]*property="og:url"[^>]*>', '<meta property="og:url" content="<%= url.replace( "index.html", "" ) %>">' ]
+                    ],
 
-                    thumbnail: {
-                        '<meta [^>]*property="og:image"[^>]*>': '<meta property="og:image" content="<%= thumbnail %>">'
-                    },
+                    "thumbnail": [
+                        [ '<meta [^>]*property="og:image"[^>]*>', '<meta property="og:image" content="<%= thumbnail %>">' ]
+                    ],
 
-                    canonical: {
-                        '<link [^>]*rel="canonical"[^>]*>': '<link rel="canonical" href="<%= canonical.replace( "index.html", "" ) %>">'
-                    }
+                    "canonical": [
+                        [ '<link [^>]*rel="canonical"[^>]*>', '<link rel="canonical" href="<%= canonical.replace( "index.html", "" ) %>">' ]
+                    ]
                 }
             } );
 
