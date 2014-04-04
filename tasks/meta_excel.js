@@ -64,7 +64,7 @@ function updateHTML( htmlDir, metadata, options ){
 
 module.exports = function( grunt ){
 
-    grunt.registerMultiTask( 'meta_excel', 'HTMLファイルのtitle, description, keywords, OGPなどの値を、Excelファイルの内容にあわせて更新するGruntプラグイン。', function(){
+    grunt.registerMultiTask( "meta_excel", "Update meta tags according to Excel file.", function(){
 
         var done = this.async(),
             options = this.options( {
@@ -73,18 +73,22 @@ module.exports = function( grunt ){
             } );
 
         xlsx2json( this.data.xlsx, options )
-            .done( function( pages ){
-                pages.forEach( function( metadata ){
-                    var result = updateHTML( this.data.htmlDir, metadata, options );
+            .then(
+                function( pages ){
+                    pages.forEach( function( metadata ){
+                        var result = updateHTML( this.data.htmlDir, metadata, options );
 
-                    if( result instanceof Error ){
-                        grunt.log.error( result );
-                    }
-                    else {
-                        grunt.log.ok( result );
-                    }
-                }, this );
-                done();
-            }.bind( this ) );
+                        if( result instanceof Error ){
+                            grunt.log.error( result );
+                        }
+                        else {
+                            grunt.log.ok( result );
+                        }
+                    }, this );
+                    done();
+                }.bind( this ),
+
+                function( error ){ grunt.log.error( error ); }
+            );
     } );
 };
