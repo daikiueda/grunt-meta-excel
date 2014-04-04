@@ -1,6 +1,6 @@
 {
     "name": "grunt-meta-excel",
-    "description": "HTMLファイルのtitle, description, keywords, OGPなどの値を、Excelファイルの内容にあわせて更新するGruntプラグイン。",
+    "description": "Update meta tags according to .xlsx file.",
     "version": "0.0.0",
     "homepage": "https://github.com/daikiueda/grunt-meta-excel",
     "author": "daikiueda",
