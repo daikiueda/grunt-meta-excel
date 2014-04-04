@@ -10,7 +10,8 @@
 var fs = require( "fs" ),
     path = require( "path" ),
     _ = require( "lodash" ),
-    xlsx2json = require( "xlsx2json" );
+    xlsx2json = require( "xlsx2json" ),
+    moduleRootPath = path.resolve( path.dirname( module.filename ), ".." ) + path.sep;
 
 
 function updateHTML( htmlDir, metadata, options, grunt ){
@@ -51,34 +52,7 @@ module.exports = function( grunt ){
         var done = this.async(),
             options = this.options( {
                 charset: "utf-8",
-                patterns: {
-                    "title_all": [
-                        [ '<title>.*</title>', '<title><%= title_all %></title>' ],
-                        [ '<meta property="og:title"[^>]* content="[^"]*<\\$mt:[^$]+\\$>[^"]*"[^>]*>', '<meta property="og:title" content="###">' ],
-                        [ '<meta [^>]*property="og:title"[^>]*>', '<meta property="og:title" content="<%= title_all %>">' ]
-                    ],
-
-                    "description": [
-                        [ '<meta [^>]*name="description"[^>]*>', '<meta name="description" content="<%= description %>">' ],
-                        [ '<meta [^>]*property="og:description"[^>]*>', '<meta property="og:description" content="<%= description %>">' ]
-                    ],
-
-                    "keywords": [
-                        [ '<meta [^>]*name="keywords"[^>]*>', '<meta name="keywords" content="<%= keywords %>">' ]
-                    ],
-
-                    url: [
-                        [ '<meta [^>]*property="og:url"[^>]*>', '<meta property="og:url" content="<%= url.replace( "index.html", "" ) %>">' ]
-                    ],
-
-                    "thumbnail": [
-                        [ '<meta [^>]*property="og:image"[^>]*>', '<meta property="og:image" content="<%= thumbnail %>">' ]
-                    ],
-
-                    "canonical": [
-                        [ '<link [^>]*rel="canonical"[^>]*>', '<link rel="canonical" href="<%= canonical.replace( "index.html", "" ) %>">' ]
-                    ]
-                }
+                patterns: grunt.file.readJSON( path.join( moduleRootPath, "patterns", "meta_tags-0.0.0.json" ) )
             } );
 
         xlsx2json( this.data.xlsx, options )
