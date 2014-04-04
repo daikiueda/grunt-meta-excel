@@ -14,14 +14,27 @@ var fs = require( "fs" ),
     moduleRootPath = path.resolve( path.dirname( module.filename ), ".." ) + path.sep;
 
 
-function updateHTML( htmlDir, metadata, options, grunt ){
+/**
+ * @param {String} htmlDir
+ * @param {Object} metadata
+ * @param {Object} options
+ * @returns {String|Error}
+ */
+function updateHTML( htmlDir, metadata, options ){
 
-    if( !metadata.uri ){
-        return;
+    if( !metadata.path ){
+        return new Error( "File path is not defined. \n" + JSON.stringify( metadata ) );
     }
 
-    var allPatterns = options.patterns,
-        htmlCode = fs.readFileSync( path.normalize( htmlDir + path.sep + metadata.uri ), options.charset );
+    var filePath = metadata.path,
+        allPatterns = options.patterns,
+        htmlCode;
+
+    try {
+        htmlCode = fs.readFileSync( path.join( htmlDir, filePath ), options.charset );
+    } catch( e ){
+        return e;
+    }
 
     _.forEach( allPatterns, function( patterns, attr ){
         if( typeof metadata[ attr ] === "undefined" ){
@@ -39,26 +52,37 @@ function updateHTML( htmlDir, metadata, options, grunt ){
         } );
     } );
 
-    fs.writeFileSync( path.normalize( htmlDir + path.sep + metadata.uri ), htmlCode, options.charset );
+    try {
+        fs.writeFileSync( path.join( htmlDir, filePath ), htmlCode, options.charset );
+    } catch( e ){
+        return e;
+    }
 
-    ( grunt ? grunt.log.writeln: console.log )( metadata.uri + " ... updated" );
+    return filePath + " ... updated";
 }
 
 
 module.exports = function( grunt ){
 
-    grunt.registerMultiTask( 'meta_excel', 'HTMLファイルのtitle, description, keywords, OGPなどの値を、Excelファイルの内容にのっとって更新するGruntプラグイン。', function(){
+    grunt.registerMultiTask( 'meta_excel', 'HTMLファイルのtitle, description, keywords, OGPなどの値を、Excelファイルの内容にあわせて更新するGruntプラグイン。', function(){
 
         var done = this.async(),
             options = this.options( {
                 charset: "utf-8",
-                patterns: grunt.file.readJSON( path.join( moduleRootPath, "patterns", "meta_tags-0.0.0.json" ) )
+                patterns: grunt.file.readJSON( path.join( moduleRootPath, "patterns", "meta_tags.json" ) )
             } );
 
         xlsx2json( this.data.xlsx, options )
             .done( function( pages ){
                 pages.forEach( function( metadata ){
-                    updateHTML( this.data.htmlDir, metadata, options, grunt );
+                    var result = updateHTML( this.data.htmlDir, metadata, options );
+
+                    if( result instanceof Error ){
+                        grunt.log.error( result );
+                    }
+                    else {
+                        grunt.log.ok( result );
+                    }
                 }, this );
                 done();
             }.bind( this ) );

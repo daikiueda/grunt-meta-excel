@@ -11,5 +11,8 @@
     "eqnull": true,
     "node": true,
 
-    "predef": [ "describe", "it" ]
+    "predef": [
+        "describe",
+        "it"
+    ]
 }

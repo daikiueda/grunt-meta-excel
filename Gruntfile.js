@@ -9,24 +9,12 @@
 
 module.exports = function( grunt ){
 
-    // Project configuration.
     grunt.initConfig( {
-        jshint: {
-            all: [
-                'Gruntfile.js',
-                'tasks/*.js',
-                '<%= mochaTest.test.src %>'
-            ],
-            options: {
-                jshintrc: '.jshintrc'
-            }
-        },
-
         meta_excel: {
             options: {
                 dataStartingRow: 8,
                 mapping: {
-                    uri: "A",
+                    path: "A",
                     title: "B",
                     title_all: "D",
                     description: "E",
@@ -39,6 +27,17 @@ module.exports = function( grunt ){
             test_site: {
                 xlsx: "sample/pages.xlsx",
                 htmlDir: "sample/htdocs/"
+            }
+        },
+
+        jshint: {
+            all: [
+                'Gruntfile.js',
+                'tasks/*.js',
+                '<%= mochaTest.test.src %>'
+            ],
+            options: {
+                jshintrc: '.jshintrc'
             }
         },
 

@@ -1,6 +1,6 @@
 # grunt-meta-excel
 
-> HTMLファイルのtitle, description, keywords, OGPなどの値を、Excelファイルの内容にのっとって更新するGruntプラグイン。
+> HTMLファイルのtitle, description, keywords, OGPなどの値を、Excelファイルの内容にあわせて更新するGruntプラグイン。
 
 ## Getting Started
 This plugin requires Grunt `~0.4.4`
