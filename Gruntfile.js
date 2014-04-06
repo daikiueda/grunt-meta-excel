@@ -15,12 +15,12 @@ module.exports = function( grunt ){
                 dataStartingRow: 7,
                 mapping: {
                     path: "E",
-                    title: "B",
-                    title_all: "F",
-                    description: "H",
-                    keywords: "J",
-                    url: "L",
-                    thumbnail: "M"
+                    title: "F",
+                    title_all: "G",
+                    description: "I",
+                    keywords: "K",
+                    url: "M",
+                    thumbnail: "N"
                 }
             },
             test_site: {
