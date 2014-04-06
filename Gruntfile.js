@@ -14,18 +14,17 @@ module.exports = function( grunt ){
             options: {
                 dataStartingRow: 7,
                 mapping: {
-                    path: "A",
+                    path: "E",
                     title: "B",
-                    title_all: "D",
-                    description: "E",
-                    keywords: "F",
-                    url: "G",
-                    thumbnail: "H",
-                    canonical: "I"
+                    title_all: "F",
+                    description: "H",
+                    keywords: "J",
+                    url: "L",
+                    thumbnail: "M"
                 }
             },
             test_site: {
-                xlsx: "sample/pages.xlsx",
+                xlsx: "sample/sitemap.xlsm",
                 htmlDir: "sample/htdocs/"
             }
         },
