@@ -14,14 +14,11 @@
     ],
 
     "url": [
-        [ "<meta [^>]*property=\"og:url\"[^>]*>", "<meta property=\"og:url\" content=\"<%= url.replace( 'index.html', '' ) %>\">" ]
+        [ "<meta [^>]*property=\"og:url\"[^>]*>", "<meta property=\"og:url\" content=\"<%= url.replace( 'index.html', '' ) %>\">" ],
+        [ "<link [^>]*rel=\"canonical\"[^>]*>", "<link rel=\"canonical\" href=\"<%= url.replace( 'index.html', '' ) %>\">" ]
     ],
 
     "thumbnail": [
         [ "<meta [^>]*property=\"og:image\"[^>]*>", "<meta property=\"og:image\" content=\"<%= thumbnail %>\">" ]
-    ],
-
-    "canonical": [
-        [ "<link [^>]*rel=\"canonical\"[^>]*>", "<link rel=\"canonical\" href=\"<%= canonical.replace( 'index.html', '' ) %>\">" ]
     ]
 }
