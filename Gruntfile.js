@@ -12,7 +12,7 @@ module.exports = function( grunt ){
     grunt.initConfig( {
         meta_excel: {
             options: {
-                dataStartingRow: 8,
+                dataStartingRow: 7,
                 mapping: {
                     path: "A",
                     title: "B",
