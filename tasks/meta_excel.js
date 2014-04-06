@@ -76,6 +76,10 @@ module.exports = function( grunt ){
             .then(
                 function( pages ){
                     pages.forEach( function( metadata ){
+                        if( _( metadata ).values().without( "" ).isEmpty() ){
+                            return;
+                        }
+
                         var result = updateHTML( this.data.htmlDir, metadata, options );
 
                         if( result instanceof Error ){
