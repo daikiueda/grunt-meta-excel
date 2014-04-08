@@ -73,7 +73,7 @@ grunt.initConfig( {
     }
 } );
 
-grunt.loadNpmTasks( "grunt-mocha-test" );
+grunt.loadNpmTasks( "grunt-meta-excel" );
 ```
 ```Bash
 $ grunt meta_excel
