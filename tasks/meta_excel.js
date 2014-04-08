@@ -26,12 +26,20 @@ function updateHTML( htmlDir, metadata, options ){
         return new Error( "File path is not defined. \n" + JSON.stringify( metadata ) );
     }
 
-    var filePath = metadata.path,
+    var filePath = path.join( htmlDir, metadata.path ),
         allPatterns = options.patterns,
+        completeMessage = "updated",
         htmlCode;
 
     try {
-        htmlCode = fs.readFileSync( path.join( htmlDir, filePath ), options.charset );
+        if( !fs.existsSync( filePath ) && options.boilerplate ){
+            htmlCode = fs.readFileSync( options.boilerplate, options.charset );
+            completeMessage = "generated";
+        }
+
+        if( !htmlCode ){
+            htmlCode = fs.readFileSync( filePath, options.charset );
+        }
     } catch( e ){
         return e;
     }
@@ -53,12 +61,12 @@ function updateHTML( htmlDir, metadata, options ){
     } );
 
     try {
-        fs.writeFileSync( path.join( htmlDir, filePath ), htmlCode, options.charset );
+        fs.writeFileSync( filePath, htmlCode, options.charset );
     } catch( e ){
         return e;
     }
 
-    return filePath + " ... updated";
+    return filePath + " ... " + completeMessage + ".";
 }
 
 
@@ -66,11 +74,27 @@ module.exports = function( grunt ){
 
     grunt.registerMultiTask( "meta_excel", "Update meta tags according to Excel file.", function(){
 
-        var done = this.async(),
-            options = this.options( {
+        var options = this.options( {
                 charset: "utf-8",
                 patterns: grunt.file.readJSON( path.join( moduleRootPath, "patterns", "meta_tags.json" ) )
-            } );
+            } ),
+            requiredOptions = [ "dataStartingRow", "mapping" ],
+            done;
+
+        if( this.flags.generate ){
+            requiredOptions.push( "boilerplate" );
+        }
+        else {
+            delete options.boilerplate
+        }
+
+        requiredOptions.forEach( function( propety ){
+            if( !options[ propety ] ){
+                grunt.fail.warn( new Error( "options." + propety + " is required." ) );
+            }
+        } );
+
+        done = this.async();
 
         xlsx2json( this.data.xlsx, options )
             .then(

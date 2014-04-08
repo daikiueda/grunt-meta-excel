@@ -25,7 +25,10 @@ module.exports = function( grunt ){
             },
             test_site: {
                 xlsx: "sample/sitemap.xlsm",
-                htmlDir: "sample/htdocs/"
+                htmlDir: "sample/htdocs/",
+                options: {
+                    boilerplate: "sample/htdocs/__boilerplate.html"
+                }
             }
         },
 
