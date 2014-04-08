@@ -9,6 +9,7 @@
 
 var fs = require( "fs" ),
     path = require( "path" ),
+    mkdirp = require( "mkdirp" ),
     _ = require( "lodash" ),
     xlsx2json = require( "xlsx2json" ),
     moduleRootPath = path.resolve( path.dirname( module.filename ), ".." ) + path.sep;
@@ -61,6 +62,10 @@ function updateHTML( htmlDir, metadata, options ){
     } );
 
     try {
+        if( !fs.existsSync( path.dirname( filePath ) ) ){
+            mkdirp.sync( path.dirname( filePath ) );
+        }
+
         fs.writeFileSync( filePath, htmlCode, options.charset );
     } catch( e ){
         return e;
