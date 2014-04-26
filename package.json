@@ -1,7 +1,7 @@
 {
     "name": "grunt-meta-excel",
     "description": "Update meta tags according to .xlsx file.",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "homepage": "https://github.com/daikiueda/grunt-meta-excel",
     "author": "daikiueda",
     "repository": {
@@ -17,6 +17,7 @@
             "url": "https://github.com/daikiueda/grunt-meta-excel/blob/master/LICENSE"
         }
     ],
+    "main": "Gruntfile.js",
     "engines": {
         "node": ">= 0.10.0"
     },
