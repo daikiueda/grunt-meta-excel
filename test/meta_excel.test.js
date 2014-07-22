@@ -18,9 +18,44 @@ describe( "grunt-meta-excel", function(){
     after( function( done ){
         removeTestFiles().then( function(){ done(); } );
     } );
-    
-    it( "test", function( done ){
-        setInterval( done, 100 );
+
+
+    describe( "utf8 (default)", function(){
+        
+        describe( "Update meta tags.", function(){
+            
+            it( "内容が更新される。" );
+        } );
+
+        describe( "Generate html files.", function(){
+
+            it( "HTMLファイルが生成される。" );
+            
+            it( "内容がxlsxどおりである。" );
+        } );
+    } );
+
+
+    describe( "shift_jis", function(){
+
+        describe( "Update meta tags.", function(){
+
+            it( "内容が更新される。" );
+        } );
+
+        describe( "Generate html files.", function(){
+
+            it( "HTMLファイルが生成される。" );
+
+            it( "内容がxlsxどおりである。" );
+
+        } );
+    } );
+
+    describe( "Implementation of test cases.", function(){
+        it( "Progress", function(){
+            throw new Error( "is in the process" );
+        } );
     } );
 } );
 
@@ -32,6 +67,10 @@ function prepareTestFiles(){
     removeTestFiles()
         .then( function(){
             fs.mkdir( TEMP_DIR, function( err ){
+                if( err ){
+                    deferred.reject( err );
+                    return;
+                }
 
                 Q.all(
                     ( function(){
