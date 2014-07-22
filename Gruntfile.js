@@ -23,7 +23,7 @@ module.exports = function( grunt ){
                     thumbnail: "N"
                 }
             },
-            test_site: {
+            sample_site: {
                 xlsx: "sample/sitemap.xlsm",
                 htmlDir: "sample/htdocs/",
                 options: {
@@ -54,10 +54,9 @@ module.exports = function( grunt ){
     } );
 
     grunt.loadTasks( "tasks" );
+    grunt.registerTask( "default", "meta_excel:sample_site" );
 
     grunt.loadNpmTasks( "grunt-contrib-jshint" );
     grunt.loadNpmTasks( "grunt-mocha-test" );
-
-    grunt.registerTask( "test", [ "mochaTest" ] );
-    grunt.registerTask( "default", [ "jshint", "test" ] );
+    grunt.registerTask( "test", [ "jshint", "mochaTest" ] );
 };

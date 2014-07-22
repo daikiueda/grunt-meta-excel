@@ -90,7 +90,7 @@ module.exports = function( grunt ){
             requiredOptions.push( "boilerplate" );
         }
         else {
-            delete options.boilerplate
+            delete options.boilerplate;
         }
 
         requiredOptions.forEach( function( propety ){
