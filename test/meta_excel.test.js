@@ -1,7 +1,8 @@
 "use strict";
 
 var TEMP_DIR = "./.tmp",
-    
+
+    exec = require( "child_process" ).exec,
     expect = require( "chai" ).expect,
     
     Q = require( "q" ),
@@ -23,8 +24,13 @@ describe( "grunt-meta-excel", function(){
     describe( "utf8 (default)", function(){
         
         describe( "Update meta tags.", function(){
-            
-            it( "内容が更新される。" );
+
+            it( "内容が更新される。", function( done ){
+                exec( "grunt meta_excel:test_utf8_update", function( err ){
+                    
+                    done();
+                } );
+            } );
         } );
 
         describe( "Generate html files.", function(){
@@ -62,7 +68,7 @@ describe( "grunt-meta-excel", function(){
 
 function prepareTestFiles(){
     var deferred = Q.defer(),
-        cpy = require( "cpy" );
+        shell = require( "shelljs" );
 
     removeTestFiles()
         .then( function(){
@@ -72,24 +78,19 @@ function prepareTestFiles(){
                     return;
                 }
 
-                Q.all(
-                    ( function(){
-                        var deferred = Q.defer();
-                        cpy( ["**/*"], path.resolve( TEMP_DIR, "htdocs_replace" ), { cwd: "./sample/htdocs" }, function( err ){
-                            deferred.resolve( err );
-                        } );
-                        return deferred.promise;
-                    } )(),
+                shell.cp(
+                    "-r",
+                    path.resolve( "./sample/htdocs/*" ),
+                    path.resolve( TEMP_DIR, "htdocs_update" )
+                );
 
-                    ( function(){
-                        var deferred = Q.defer();
-                        cpy( ["__boilerplate.html"], path.resolve( TEMP_DIR, "htdocs_generate" ), { cwd: "./sample/htdocs" }, function( err ){
-                            deferred.resolve( err );
-                        } );
-                        return deferred.promise;
-                    } )()
-                )
-                    .then( function(){ deferred.resolve( true ); } );
+                shell.cp(
+                    "-r",
+                    path.resolve( "./sample/htdocs/__boilerplate.html" ),
+                    path.resolve( TEMP_DIR, "htdocs_generate" )
+                );
+                
+                deferred.resolve( true );
         } );
     } );
     
