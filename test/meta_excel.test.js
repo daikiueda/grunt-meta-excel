@@ -6,9 +6,7 @@ var TEMP_DIR = "./.tmp",
     
     Q = require( "q" ),
     path = require( "path" ),
-    fs = require( "fs" ),
-    rimraf = require( "rimraf" ),
-    cpy = require( "cpy" );
+    fs = require( "fs" );
 
 
 describe( "grunt-meta-excel", function(){
@@ -22,29 +20,15 @@ describe( "grunt-meta-excel", function(){
     } );
     
     it( "test", function( done ){
-        setInterval( done, 1000 );
+        setInterval( done, 100 );
     } );
 } );
 
 
-function removeTestFiles(){
-    var deferred = Q.defer();
-
-    if( fs.existsSync( TEMP_DIR ) ){
-        rimraf( TEMP_DIR, function(){
-            deferred.resolve( true );
-        } );
-    }
-    else {
-        deferred.resolve( true );
-    }
-    
-    return deferred.promise;
-}
-
 function prepareTestFiles(){
-    var deferred = Q.defer();
-    
+    var deferred = Q.defer(),
+        cpy = require( "cpy" );
+
     removeTestFiles()
         .then( function(){
             fs.mkdir( TEMP_DIR, function( err ){
@@ -72,3 +56,19 @@ function prepareTestFiles(){
     
     return deferred.promise;
 }
+
+function removeTestFiles(){
+    var deferred = Q.defer();
+
+        if( fs.existsSync( TEMP_DIR ) ){
+            require( "rimraf" )( TEMP_DIR, function(){
+            deferred.resolve( true );
+        } );
+    }
+    else {
+        deferred.resolve( true );
+    }
+
+    return deferred.promise;
+}
+
