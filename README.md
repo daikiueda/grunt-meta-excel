@@ -1,4 +1,4 @@
-# grunt-meta-excel
+# grunt-meta-excel [![Build Status](https://travis-ci.org/daikiueda/grunt-meta-excel.svg?branch=master)](https://travis-ci.org/daikiueda/grunt-meta-excel)
 
 > Update meta tags according to .xlsx file.  
 > HTMLファイルのtitle, description, keywords, OGPなどの値を、Excelファイルの内容にあわせて更新するGruntプラグイン。
