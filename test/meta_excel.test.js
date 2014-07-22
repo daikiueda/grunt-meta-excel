@@ -14,14 +14,12 @@ var TEMP_DIR = "./.tmp",
 describe( "grunt-meta-excel", function(){
     
     before( function( done ){
-        prepareTestFiles( function(){
-            done();
-        } )
+        prepareTestFiles().then( function(){ done(); } );
     } );
     
-//    after( function(){
-//        rimraf.sync( TEMP_DIR );
-//    } );
+    after( function( done ){
+        removeTestFiles().then( function(){ done(); } );
+    } );
     
     it( "test", function( done ){
         setInterval( done, 1000 );
@@ -29,30 +27,48 @@ describe( "grunt-meta-excel", function(){
 } );
 
 
-function prepareTestFiles( done ){
+function removeTestFiles(){
+    var deferred = Q.defer();
+
     if( fs.existsSync( TEMP_DIR ) ){
-        rimraf.sync( TEMP_DIR );
+        rimraf( TEMP_DIR, function(){
+            deferred.resolve( true );
+        } );
     }
+    else {
+        deferred.resolve( true );
+    }
+    
+    return deferred.promise;
+}
 
-    fs.mkdir( TEMP_DIR, function( err ){
+function prepareTestFiles(){
+    var deferred = Q.defer();
+    
+    removeTestFiles()
+        .then( function(){
+            fs.mkdir( TEMP_DIR, function( err ){
 
-        Q.all(
-            ( function(){
-                var deferred = Q.defer();
-                cpy( ["**/*"], path.resolve( TEMP_DIR, "htdocs_replace" ), { cwd: "./sample/htdocs" }, function( err ){
-                    deferred.resolve( err );
-                } );
-                return deferred.promise;
-            } )(),
+                Q.all(
+                    ( function(){
+                        var deferred = Q.defer();
+                        cpy( ["**/*"], path.resolve( TEMP_DIR, "htdocs_replace" ), { cwd: "./sample/htdocs" }, function( err ){
+                            deferred.resolve( err );
+                        } );
+                        return deferred.promise;
+                    } )(),
 
-            ( function(){
-                var deferred = Q.defer();
-                cpy( ["__boilerplate.html"], path.resolve( TEMP_DIR, "htdocs_generate" ), { cwd: "./sample/htdocs" }, function( err ){
-                    deferred.resolve( err );
-                } );
-                return deferred.promise;
-            } )()
-        )
-            .then( function(){ done(); } );
+                    ( function(){
+                        var deferred = Q.defer();
+                        cpy( ["__boilerplate.html"], path.resolve( TEMP_DIR, "htdocs_generate" ), { cwd: "./sample/htdocs" }, function( err ){
+                            deferred.resolve( err );
+                        } );
+                        return deferred.promise;
+                    } )()
+                )
+                    .then( function(){ deferred.resolve( true ); } );
+        } );
     } );
+    
+    return deferred.promise;
 }
