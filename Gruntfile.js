@@ -30,12 +30,30 @@ module.exports = function( grunt ){
                     boilerplate: "sample/htdocs/__boilerplate.html"
                 }
             },
-            
+
             test_utf8_update: {
                 xlsx: "sample/sitemap.xlsm",
-                htmlDir: ".tmp/htdocs_update",
+                htmlDir: ".tmp/htdocs_utf8_update"
+            },
+
+            test_utf8_generate: {
+                xlsx: "sample/sitemap.xlsm",
+                htmlDir: ".tmp/htdocs_utf8_generate",
                 options: {
-                    boilerplate: ".tmp/htdocs_update/__boilerplate.html"
+                    boilerplate: ".tmp/htdocs_utf8_update/__boilerplate.html"
+                }
+            },
+
+            test_sjis_update: {
+                xlsx: "sample/sitemap.xlsm",
+                htmlDir: ".tmp/htdocs_sjis_update"
+            },
+
+            test_sjis_generate: {
+                xlsx: "sample/sitemap.xlsm",
+                htmlDir: ".tmp/htdocs_sjis_generate",
+                options: {
+                    boilerplate: ".tmp/htdocs_sjis_update/__boilerplate.html"
                 }
             }
         },
