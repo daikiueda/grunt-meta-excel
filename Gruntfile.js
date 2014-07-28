@@ -46,13 +46,17 @@ module.exports = function( grunt ){
 
             test_sjis_update: {
                 xlsx: "sample/sitemap.xlsm",
-                htmlDir: ".tmp/htdocs_sjis_update"
+                htmlDir: ".tmp/htdocs_sjis_update",
+                options: {
+                    charset: "shift_jis"
+                }
             },
 
             test_sjis_generate: {
                 xlsx: "sample/sitemap.xlsm",
                 htmlDir: ".tmp/htdocs_sjis_generate",
                 options: {
+                    charset: "shift_jis",
                     boilerplate: ".tmp/htdocs_sjis_update/__boilerplate.html"
                 }
             }

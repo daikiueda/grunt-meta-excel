@@ -17,9 +17,9 @@ var TEMP_DIR = "./.tmp",
         prepareTestFiles().then( function(){ done(); } );
     } );
     
-    //after( function( done ){
-    //    removeTestFiles().then( function(){ done(); } );
-    //} );
+    after( function( done ){
+        removeTestFiles().then( function(){ done(); } );
+    } );
 
 
     describe( "utf8 (default)", function(){
@@ -72,8 +72,6 @@ var TEMP_DIR = "./.tmp",
                     "shift_jis"
                 );
                 
-                console.log( updatedFileContent );
-
                 expect( updatedFileContent ).to.contain( "サンプルページ2 | サンプルサブカテゴリー | サンプルカテゴリー1 | サンプルサイト" );
                 expect( updatedFileContent ).to.contain( "<h1>サンプルHTML（Shift_JIS）</h1>" );
             } );
@@ -96,8 +94,6 @@ var TEMP_DIR = "./.tmp",
                     fs.readFileSync( path.join( TEMP_DIR, "htdocs_sjis_generate/sample_dir_1/sample_subdir/sample_2.html" ) ),
                     "shift_jis"
                 );
-
-                console.log( updatedFileContent );
 
                 expect( updatedFileContent ).to.contain( "サンプルページ2 | サンプルサブカテゴリー | サンプルカテゴリー1 | サンプルサイト" );
                 expect( updatedFileContent ).to.contain( "<h1>サンプルHTML（Shift_JIS）</h1>" );

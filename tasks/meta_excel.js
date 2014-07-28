@@ -10,8 +10,10 @@
 var fs = require( "fs" ),
     path = require( "path" ),
     mkdirp = require( "mkdirp" ),
+    
     _ = require( "lodash" ),
     xlsx2json = require( "xlsx2json" ),
+    iconv = require( "iconv-lite" ),
     moduleRootPath = path.resolve( path.dirname( module.filename ), ".." ) + path.sep;
 
 
@@ -19,9 +21,14 @@ var fs = require( "fs" ),
  * @param {String} htmlDir
  * @param {Object} metadata
  * @param {Object} options
+ *   @param {Object} options.patterns
+ *   @param {String} options.charset
+ *   @param {String} options.boilerplate
  * @returns {String|Error}
  */
 function updateHTML( htmlDir, metadata, options ){
+    
+    options = options || {};
 
     if( !metadata.path ){
         return new Error( "File path is not defined. \n" + JSON.stringify( metadata ) );
@@ -29,17 +36,19 @@ function updateHTML( htmlDir, metadata, options ){
 
     var filePath = path.join( htmlDir, metadata.path ),
         allPatterns = options.patterns,
+        charset = options.charset || "utf8",
+        boilerplate = options.boilerplate,
         completeMessage = "updated",
         htmlCode;
 
     try {
-        if( !fs.existsSync( filePath ) && options.boilerplate ){
-            htmlCode = fs.readFileSync( options.boilerplate, options.charset );
+        if( !fs.existsSync( filePath ) && boilerplate ){
+            htmlCode = iconv.decode( fs.readFileSync( boilerplate), charset );
             completeMessage = "generated";
         }
 
         if( !htmlCode ){
-            htmlCode = fs.readFileSync( filePath, options.charset );
+            htmlCode = iconv.decode( fs.readFileSync( filePath ), charset );
         }
     } catch( e ){
         return e;
@@ -66,7 +75,7 @@ function updateHTML( htmlDir, metadata, options ){
             mkdirp.sync( path.dirname( filePath ) );
         }
 
-        fs.writeFileSync( filePath, htmlCode, options.charset );
+        fs.writeFileSync( filePath, iconv.encode( htmlCode, charset ) );
     } catch( e ){
         return e;
     }
