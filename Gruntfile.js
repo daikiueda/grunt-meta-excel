@@ -59,6 +59,15 @@ module.exports = function( grunt ){
                     charset: "shift_jis",
                     boilerplate: ".tmp/htdocs_sjis_update/__boilerplate.html"
                 }
+            },
+
+            test_pattern_json_file: {
+                xlsx: "sample/sitemap.xlsm",
+                htmlDir: ".tmp/htdocs_utf8_generate",
+                options: {
+                    patternsJsonPath: "./sample/patterns/meta_tags.json",
+                    boilerplate: ".tmp/htdocs_utf8_update/__boilerplate.html"
+                }
             }
         },
 
