@@ -48,6 +48,7 @@ grunt.initConfig({
   * `dataStartingRow` Number (*one-based row position)
   * `mapping` Object
   * `charset` String
+  * `patternsJsonPath` String
 
 ### Usage Examples
 
