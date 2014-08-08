@@ -106,7 +106,6 @@ describe( "grunt-meta-excel", function(){
                 prepareTestFiles()
                     .then( function(){
                         exec( "grunt meta_excel:test_pattern_json_file:generate", function(){
-                            console.log( "aaa" );
                             done();
                         } );
                     } )

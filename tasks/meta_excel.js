@@ -14,7 +14,7 @@ var fs = require( "fs" ),
     _ = require( "lodash" ),
     xlsx2json = require( "xlsx2json" ),
     iconv = require( "iconv-lite" ),
-    moduleRootPath = path.resolve( path.dirname( module.filename ), ".." ) + path.sep;
+    moduleRootPath = path.resolve( path.dirname( module.filename ), ".." );
 
 
 /**
@@ -88,11 +88,9 @@ module.exports = function( grunt ){
 
     grunt.registerMultiTask( "meta_excel", "Update meta tags according to Excel file.", function(){
 
-        var options = this.options( {
-                charset: "utf-8",
-                patterns: grunt.file.readJSON( path.join( moduleRootPath, "patterns", "meta_tags.json" ) )
-            } ),
+        var options = this.options( { charset: "utf-8" } ),
             requiredOptions = [ "dataStartingRow", "mapping" ],
+            patternsJsonPath,
             done;
 
         if( this.flags.generate ){
@@ -101,12 +99,18 @@ module.exports = function( grunt ){
         else {
             delete options.boilerplate;
         }
-
+        
         requiredOptions.forEach( function( propety ){
             if( !options[ propety ] ){
                 grunt.fail.warn( new Error( "options." + propety + " is required." ) );
             }
         } );
+
+        options.patterns = grunt.file.readJSON(
+            options.patternsJsonPath ?
+                path.join( process.cwd(), options.patternsJsonPath ):
+                path.join( moduleRootPath, "patterns", "meta_tags.json" )
+        );
 
         done = this.async();
 
