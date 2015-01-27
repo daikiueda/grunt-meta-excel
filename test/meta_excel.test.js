@@ -155,7 +155,7 @@ function prepareTestFiles(){
                     path.resolve( "./sample/htdocs_sjis/__boilerplate.html" ),
                     path.resolve( TEMP_DIR, "htdocs_sjis_generate" )
                 );
-                
+
                 deferred.resolve( true );
         } );
     } );
@@ -166,8 +166,8 @@ function prepareTestFiles(){
 function removeTestFiles(){
     var deferred = Q.defer();
 
-        if( fs.existsSync( TEMP_DIR ) ){
-            require( "rimraf" )( TEMP_DIR, function(){
+    if( fs.existsSync( TEMP_DIR ) ){
+        require( "rimraf" )( TEMP_DIR, function(){
             deferred.resolve( true );
         } );
     }
