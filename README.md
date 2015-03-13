@@ -12,6 +12,9 @@ If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out th
 $ npm install grunt-meta-excel --save-dev
 ```
 
+> ※インストールに失敗する場合、node-gypの動作条件が満たされていない可能性が考えられます。
+> https://github.com/TooTallNate/node-gyp
+
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```JavaScript
