@@ -13,12 +13,12 @@ var TEMP_DIR = "./.tmp",
 
 describe( "grunt-meta-excel", function(){
     
-    before( function( done ){
-        prepareTestFiles().then( function(){ done(); } );
+    before( function(){
+        prepareTestFiles();
     } );
     
-    after( function( done ){
-        removeTestFiles().then( function(){ done(); } );
+    after( function(){
+        removeTestFiles();
     } );
 
 
@@ -103,12 +103,10 @@ describe( "grunt-meta-excel", function(){
 
         describe( "patternsJsonPath", function(){
             before( function( done ){
-                prepareTestFiles()
-                    .then( function(){
-                        exec( "grunt meta_excel:test_pattern_json_file:generate", function(){
-                            done();
-                        } );
-                    } )
+                prepareTestFiles();
+                exec( "grunt meta_excel:test_pattern_json_file:generate", function(){
+                    done();
+                } );
             } );
 
             it( "指定されたパターンにもとづいて内容が適用される。", function(){
@@ -121,60 +119,38 @@ describe( "grunt-meta-excel", function(){
 
 
 function prepareTestFiles(){
-    var deferred = Q.defer(),
-        shell = require( "shelljs" );
+    var shell = require( "shelljs" );
 
-    removeTestFiles()
-        .then( function(){
-            fs.mkdir( TEMP_DIR, function( err ){
-                if( err ){
-                    deferred.reject( err );
-                    return;
-                }
+    removeTestFiles();
 
-                shell.cp(
-                    "-r",
-                    path.resolve( "./sample/htdocs/*" ),
-                    path.resolve( TEMP_DIR, "htdocs_utf8_update" )
-                );
+    shell.mkdir( TEMP_DIR );
 
-                shell.cp(
-                    "-r",
-                    path.resolve( "./sample/htdocs/__boilerplate.html" ),
-                    path.resolve( TEMP_DIR, "htdocs_utf8_generate" )
-                );
+    shell.cp(
+        "-r",
+        path.resolve( "./sample/htdocs/*" ),
+        path.resolve( TEMP_DIR, "htdocs_utf8_update" )
+    );
 
-                shell.cp(
-                    "-r",
-                    path.resolve( "./sample/htdocs_sjis/*" ),
-                    path.resolve( TEMP_DIR, "htdocs_sjis_update" )
-                );
+    shell.cp(
+        "-r",
+        path.resolve( "./sample/htdocs/__boilerplate.html" ),
+        path.resolve( TEMP_DIR, "htdocs_utf8_generate" )
+    );
 
-                shell.cp(
-                    "-r",
-                    path.resolve( "./sample/htdocs_sjis/__boilerplate.html" ),
-                    path.resolve( TEMP_DIR, "htdocs_sjis_generate" )
-                );
+    shell.cp(
+        "-r",
+        path.resolve( "./sample/htdocs_sjis/*" ),
+        path.resolve( TEMP_DIR, "htdocs_sjis_update" )
+    );
 
-                deferred.resolve( true );
-        } );
-    } );
-    
-    return deferred.promise;
+    shell.cp(
+        "-r",
+        path.resolve( "./sample/htdocs_sjis/__boilerplate.html" ),
+        path.resolve( TEMP_DIR, "htdocs_sjis_generate" )
+    );
 }
 
 function removeTestFiles(){
-    var deferred = Q.defer();
-
-    if( fs.existsSync( TEMP_DIR ) ){
-        require( "rimraf" )( TEMP_DIR, function(){
-            deferred.resolve( true );
-        } );
-    }
-    else {
-        deferred.resolve( true );
-    }
-
-    return deferred.promise;
+    require( "shelljs" ).rm( "-rf", TEMP_DIR )
 }
 
