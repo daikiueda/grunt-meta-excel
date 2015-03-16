@@ -1,7 +1,7 @@
 {
   "name": "grunt-meta-excel",
   "description": "Update meta tags according to .xlsx file.",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "homepage": "https://github.com/daikiueda/grunt-meta-excel",
   "author": "daikiueda",
   "repository": {
@@ -28,7 +28,7 @@
     "iconv-lite": "^0.4.7",
     "lodash": "^3.5.0",
     "mkdirp": "^0.5.0",
-    "xlsx2json": "0.0.5"
+    "xlsx2json": "0.0.6"
   },
   "devDependencies": {
     "chai": "^2.1.2",
